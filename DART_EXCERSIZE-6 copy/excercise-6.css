@@ -1,0 +1,1104 @@
+@import url("https://use.typekit.net/iqp0xhq.css");
+@import url("https://use.typekit.net/iqp0xhq.css");
+
+* {
+    box-sizing: border-box;
+}
+html {
+    scroll-behavior: smooth;
+}
+
+:root {
+  --red: #d2201a; /* passes contrast check */
+  --white: #ffffff;
+  --grey: #545454;
+}
+
+.inversed-colour {
+    --white: #d2201a;
+    --red: #ffffff;
+    --grey: #545454;
+}
+
+body {
+    font-size: clamp(11px, 11.5px, 12px);
+    margin: 0;
+    background: var(--white);
+    font-family: "aileron",sans-serif;
+    color: var(--red);
+    height: 300vh;
+}
+
+p {
+    text-align: justify;
+}
+
+
+h1.map-note {
+    font-size: clamp(0.6rem, 1.4vw, 1rem);
+    line-height: 1.4;
+    margin: 0;
+    padding: 0px 0px 10px 15px;
+    width: 95%;
+    align-items: justify;
+    text-align: justify;
+}
+
+
+
+section.parent {
+    color: var(--red);
+    font-family: "source-serif-4", serif;
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+   padding: 10px 15px;
+    /* position: relative; */
+}
+
+.title {
+    flex: 0 1 auto;
+    min-width: 220px;
+    font-size: clamp(1rem, 2vw, 1.7rem); 
+    margin: 0;
+    white-space: nowrap;
+}
+
+.title a, .title a:hover {
+    text-decoration: none;
+    color: var(--red);
+}
+
+/* .subtitle {
+    font-size: clamp(0.73rem, 1.5vw, 1.5rem);
+    text-align: justify;
+    margin: 0;
+    padding: 0;
+} */
+
+.nav {
+  display: flex;
+flex: 1;
+ min-width: 0;
+
+ font-size: clamp(1rem, 1.5vw, 2rem);
+  list-style: none;
+  margin: 0;
+ padding: 0;
+ padding-right: 5px;
+ padding-left: 5px;
+
+  justify-content: center;
+
+    border-radius: 0px;
+gap: clamp(10px, 2vw + 1rem, 9vw);
+}
+
+.nav a {
+    text-decoration: none;
+    color: var(--red);
+    padding: 5px 15px 5px 15px;
+}
+
+.nav a:visited {
+    color: var(--red);
+}
+
+.nav a:hover {
+ background-color: var(--red);
+ color: var(--white);   
+ text-decoration: none;
+}
+
+#menu-toggle {
+    display: none;
+}
+
+.menu-button-container {
+  display: none;
+  width: 30px;
+  height: 20px;
+  position: relative;
+  cursor: pointer;
+}
+
+.menu-button,
+.menu-button::before,
+.menu-button::after {
+  position: absolute;
+  width: 30px;
+  height: 2px;
+  background: var(--red);
+  content: '';
+  transition: 0s;
+}
+
+.menu-button {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.menu-button::before {
+  top: -8px;
+}
+
+.menu-button::after {
+  top: 8px;
+}
+
+.flag {
+    flex: 0 0 auto;
+    background-image: url(/images-6/ca-flag.jpg);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.flag img {
+  height: auto;
+  display: block;
+  width: clamp(50px, 5vw, 90px);
+  /* transition: opacity 0.2s ease; */
+}
+
+.flag:hover {
+  background-image: url(/images-6/ca-flag-inversed.jpg);
+}
+
+.flag:hover img {
+  opacity: 0;
+}
+
+
+.link {
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    color: var(--color-text);
+    text-decoration:none;
+}
+
+.burger {
+  display: none; 
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.burger span {
+  display: block;
+  height: 2px;
+  background: var(--red);
+  width: 100%;
+}
+
+ .menu-wrapper {
+    position: relative;
+  }
+
+.map {
+    width: auto;
+    height: auto;
+    display: block;
+    max-width: 100%;
+    max-height: calc(100vh - 140px);
+    margin: 0;
+}
+
+.map-viewport {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 12px;
+  position: relative; /* allow absolutely positioned overlays */
+  overflow: hidden; /* keep panned content inside viewport */
+  border: 1px solid var(--red);
+  z-index: 0;
+}
+
+.map-inner {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ensure pointer gestures (drag/pinch) are handled by our script */
+.map-viewport, .map-inner, .map {
+  touch-action: none;
+  -webkit-user-drag: none;
+}
+
+/* Modal background */
+.modal {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  padding-top: 120px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0);
+  pointer-events:none;
+}
+
+.modal-body {
+    display: flex;
+    gap: 20px;
+}
+
+#modal-text {
+    width: 100%;
+}
+
+#modal-extra {
+    width: 0;
+  overflow: hidden;
+  transition: width 0.18s ease;
+}
+
+#modal-extra.active {
+    width: 300px;
+}
+
+/* Modal content */
+.modal-content {
+    position: absolute;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #d2201a;
+  width: 50%;
+  pointer-events:all;
+}
+
+.modal-header {
+    cursor: grab;
+    width: 100%;
+    height: 30px;
+}
+
+.modal-header:active {
+    cursor: grabbing;
+}
+
+/* Close button */
+.close {
+  color: var(--grey);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover {
+  color: #000;
+  cursor: pointer;
+}
+
+.block-title {
+    font-size: clamp(1rem, 1.2vw, 1.5rem);
+}
+
+/* SVG pins */
+.pin {
+  fill: #d2201a;
+  cursor: pointer;
+   transform-box: fill-box;
+  transform-origin: center;
+}
+
+.pin-pv {
+  fill: var(--white);
+  stroke: var(--red);
+  stroke-width: 4px;
+  cursor: pointer;
+   transform-box: fill-box;
+  transform-origin: center;
+}
+
+.pin:hover,
+.pin-pv:hover {
+  transform: scale(1.5);
+}
+
+/* Hidden content storage */
+.hidden-content {
+  display: none;
+  color: var(--red);
+}
+
+#modal-text a, .popup-body a, #modal-text a:visited, .popup-body a:visited, a.extra-links, a:visited.extra-links{
+    color: var(--grey);
+}
+
+
+#modal-text a.open-extra, .popup-body a.open-extra, #modal-text a.close-extra, .popup-body a.close-extra, #modal-text a.open-extra:visited, .popup-body a.open-extra:visited, #modal-text a.close-extra:visited, .popup-body a.close-extra:visited,
+#modal-text a:active, .popup-body a:active, a:active.extra-links{
+    color: var(--red);
+}
+
+.close-extra {
+    color: var(--red);
+}
+
+
+button {
+    background: var(--white);
+    box-shadow: none;
+    border-color: var(--white);
+    box-shadow: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    font-size: clamp(11px, 11.5px, 12px);
+}
+
+.pin-label {
+    opacity: 0;
+    font-size: 2rem;
+    fill: var(--red);
+    pointer-events: none;
+    transition: opacity 0.2 ease;
+}
+
+.pin-group {
+    z-index: 10;
+}
+
+.pin-group:hover .pin-label {
+    opacity: 1;
+}
+
+/* Per-pin floating popup (desktop) */
+.pin-popup {
+  position: absolute;
+  background: #fff;
+  border: 1px solid var(--red);
+  padding: 12px;
+  width: auto;
+  max-width: calc(100% - 32px);
+  z-index: 1000;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  pointer-events: all;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  min-width: 320px; /* ensure initial popup width matches data box */
+}
+
+.pin-popup .popup-close {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+}
+
+.pin-popup .popup-body {
+  clear: both;
+  /* match site text color so injected content keeps consistent styling */
+  color: var(--red);
+  max-height: 60vh;
+  overflow: auto;
+  flex: 0 0 320px; /* keep the original data box width */
+  width: 320px;
+  max-width: 320px;
+}
+
+.pin-popup .popup-extra {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.18s ease;
+}
+
+.pin-popup .popup-extra.active {
+  width: 300px;
+}
+
+/* animate the popup container widening slightly for smoother visual */
+.pin-popup {
+  transition: width 0.18s ease;
+}
+
+/* dragging cursor states */
+.pin-popup { cursor: grab; }
+.pin-popup.dragging { cursor: grabbing; opacity: 0.98; }
+
+/* ensure touch gestures don't interfere with pointer drag */
+.pin-popup { touch-action: none; }
+
+p img {
+   width: 100%;
+   max-width: 400px;
+   margin: auto;
+   display: flex;
+   pointer-events: none;
+}
+
+.content {
+   display: flex;
+   justify-content: center; 
+   width: 80%;
+   max-width: 800px;
+   margin: auto;
+   margin-top: 60px;
+}
+
+.content h2 {
+    text-align: justify;
+}
+
+.index-container {
+    --title-row:28vh;
+    --r2: 24vh;
+    --r3: 24vh;
+    --r4: 24vh;
+
+  display: grid;
+  grid-template-rows: var(--title-row) var(--r2) var(--r3) var(--r4);
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  background-color: var(--red);
+  transition: grid-template-rows 0.3s ease;
+}
+
+.index-container:has(a:nth-of-type(1):hover) {
+  --r2: 28vh;
+  --r3: 22vh;
+  --r4: 22vh;
+}
+
+.index-container:has(a:nth-of-type(2):hover) {
+  --r2: 22vh;
+  --r3: 28vh;
+  --r4: 22vh;
+}
+
+.index-container:has(a:nth-of-type(3):hover) {
+  --r2: 22vh;
+  --r3: 22vh;
+  --r4: 28vh;
+}
+
+.index-container a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--red);
+    text-decoration: none;
+    font-size: clamp(2.5rem, 14vw, 12rem);
+    /* line-height: 1.9; */
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: var(--white);
+    border-bottom: 2px solid var(--red);
+    transition: background-color 0.3s ease, letter-spacing 0.4s ease;
+}
+
+.index-container a:hover {
+color: var(--white);
+background-color: var(--red);
+letter-spacing: 1rem;
+ /* font-size: clamp(2.75rem, 15vw, 13rem); */
+ font-family:"source-serif-4", serif;
+}
+
+
+html.index-html, body.index-html {
+    margin: 0;
+    height: 100%;
+    overflow:hidden;
+}
+
+.index-title {
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+  box-sizing: border-box;
+  background-color: var(--white);
+  padding: 0 1rem;         
+  border-bottom: 2px solid var(--red);
+}
+
+.index-title h1 {
+  margin: 0;
+  padding: 0 1rem;          /* small inner padding */
+  font-size: clamp(1.8rem, 3.5vw, 4rem);   /* toned down from 8rem */
+  line-height: 1.1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  font-family: "source-serif-4", serif;
+
+}
+
+/* nav.index {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100vh;
+    font-size: clamp(2.5rem, 3vw, 3rem);
+    font-family: "source-serif-4", serif;
+} */
+
+/* nav.index ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: clamp(20px, 4vw, 40px);
+} */
+
+/* nav.index a {
+    text-decoration: none;
+    color: var(--red);
+    padding: 10px 20px;
+    transition: 0.15s;
+}
+
+nav.index a:hover {
+    font-size: clamp(2.75rem, 3.5vw, 3.25rem);
+    transition: 0.25s;
+    
+}
+
+body.index {
+    background: url('images-6/ca-flag.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+} */
+
+div.center-text {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-width: 800px;
+  margin: 15% auto;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  align-items: center;
+  justify-content: center;
+}
+
+div.center-text-resources {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 1000px;
+  margin: 5% auto;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  align-items: center;
+  justify-content: center;
+}
+
+
+div.center-text button a {
+    margin-top: 20px;
+    color: var(--red);
+    font-size: clamp(1rem, 1.55vw, 3rem);
+    transition: 0.25s;
+    text-decoration: none;
+
+}
+
+div.center-text button a:hover, button.bottom a:hover {
+     font-size: clamp(1.2rem, 1.75vw, 3.2rem);
+       text-decoration: none;
+}
+
+button.bottom {
+    display: block;
+    margin: auto;
+    width: fit-content;
+    padding-top: 30px;
+    padding-bottom: 50px;
+}
+
+button.bottom a {
+    color: var(--red);
+    font-size: clamp(1rem, 1.55vw, 3rem);
+    transition: 0.25s;
+    text-decoration: none;
+
+}
+
+.grid-text a, .grid-text a:visited, .center-text a, .center-text a:visited {
+    text-decoration: none;
+    color: var(--red);
+    font-size: clamp(0.85rem, 1.35vw, 1.05rem);
+}
+
+.center-text a:hover, .grid-text a:hover {
+    text-decoration: none;
+}
+
+.center-text a, .grid-text a {
+   text-decoration: underline;
+}
+
+a.normal {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+}
+
+
+section.grid-text {
+    display: grid;
+    grid-template-rows: min-content min-content min-content min-content min-content;
+    grid-template-columns: 1fr 1fr;
+    gap: 0px;
+    padding: 30px;
+ width: 100%;
+}
+
+div.text {
+font-size: clamp(1rem, 1.5vw, 1.15rem);
+padding-top: 100px;
+}
+
+.grid-1 {
+grid-column: 2/3;
+grid-row: 1/2;
+}
+
+.grid-2 {
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+
+.grid-3 {
+    grid-column: 2/3;
+    grid-row: 3/4;
+}
+
+.grid-4 {
+    grid-column: 1/2;
+    grid-row: 4/5;
+}
+
+.grid-5 {
+    grid-column: 2/3;
+    grid-row: 5/6;
+}
+
+.parallax {
+  position: fixed;
+inset: 0;
+z-index: 0;
+pointer-events: none;
+}
+
+.layer {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 30%;
+  transform: translateX(-50%);
+  will-change: transform;
+}
+
+.caption-image {
+    width: 100%;
+}
+
+.tree { top: 105%; left: 12%; z-index: 0; max-width: 300px; }
+.Galton { top: 146%; left: 33%; max-width: 300px; z-index: 1; }
+.Macmurchy { top: 165%; left: 86%; max-width: 300px; z-index: 2; }
+.Davenport { top: 230%; left: 63%; max-width: 300px; z-index: 1; }
+.Building { top: 200%; left: 25%; max-width: 300px; z-index: 1; }
+.Protest { top: 500%; left: 80%; max-width: 300px; z-index: 1; }
+.Boyer { top: 490%; left: 33%; max-width: 300px; z-index: 1; }
+.Lombard { top: 300%; left: 10%; max-width: 300px; z-index: 1; }
+
+.all-text {
+  position: relative;
+  z-index: 2;
+}
+
+figcaption {
+    font-family: "source-serif-4", serif;
+}
+
+.red {
+    color: var(--white);
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px var(--red);
+    padding: 8px;
+}
+
+table a, table a:visited {
+    color: var(--red);
+    text-decoration: none;
+}
+
+table a:hover {
+    text-decoration: underline;
+}
+
+p.indent {
+    width: 80%;
+    text-indent: 30px;
+}
+
+h3 {
+    margin-top: 0;
+    width: 80%;
+}
+
+.quote {
+      display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+  margin: 15% auto;
+  margin-bottom: 10%;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  align-items: center;
+  justify-content: center;
+  text-align: justify;
+}
+
+.map-controls {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.move-hint {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--grey);
+  padding: 0px 0px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1;
+  width: fit-content;
+}
+
+.dpad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.middle-row {
+  display: flex;
+  gap: 6px;
+}
+
+.dpad button {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  color: var(--grey);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 1300px) {
+
+  .menu-button-container {
+    display: block;
+    margin-left: clamp(10px, 4vw, 40px);
+  }
+
+  .tree { top: 100%; left: 14%; z-index: 2; min-width: 210px;max-width: 300px; }
+.Galton { top: 146%; left: 33%; min-width: 210px; max-width: 300px; z-index: 1; }
+.Macmurchy { top: 165%; left: 83%; min-width: 210px;max-width: 300px; z-index: 1; }
+.Davenport { top: 230%; left: 61%; min-width: 210px;max-width: 300px; z-index: 1; }
+.Building { top: 200%; left: 25%; min-width: 210px; max-width: 300px; z-index: 1; }
+.Protest { top: 500%; left: 80%; min-width: 210px; max-width: 300px; z-index: 1; }
+.Boyer { top: 485%; left: 33%;min-width: 210px; max-width: 300px; z-index: 1; }
+.Lombard { top: 325%; left: 12%; min-width: 210px; max-width: 300px; z-index: 1; }
+
+figcaption {
+    font-family: "source-serif-4", serif;
+    width: 90%;
+}
+
+  .nav {
+    position: absolute;
+    top: 30px; /* sits just under burger */
+    right: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    background: var(--white);
+    width: 200px;
+
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+
+    /* transition: max-height 0.3s ease; */
+  }
+
+  #menu-toggle:checked ~ .nav {
+    max-height: 300px;
+    padding: 10px;
+    background: var(--red);
+    z-index: 10;
+  }
+
+  #menu-toggle:checked ~ .nav a {
+    color: var(--white);
+  }
+
+  .title {
+    /* allow the title to shrink and wrap internally without forcing a new line */
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: clamp(1.2rem, 2vw, 1.7rem);
+    margin: 0;
+    white-space: normal;
+}
+  /* keep header items on a single line; let the title wrap inside itself */
+  section.parent {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* keep the hamburger and flag fixed-size and spaced from the title */
+  .menu-wrapper {
+    flex: 0 0 auto;
+    margin-right: 12px;
+    order: 0;
+  }
+
+  .flag {
+    flex: 0 0 auto;
+    margin-left: 6px;
+    order: 0;
+  }
+
+
+}
+
+
+@media only screen and (max-width: 1200px) {
+
+  .menu-button-container {
+    display: block;
+    margin-left: clamp(10px, 4vw, 40px);
+  }
+
+  .tree { top: 92%; left: 14%; z-index: 2; max-width: 300px; }
+.Galton { top: 140%; left: 32%; max-width: 300px; z-index: 1; }
+.Macmurchy { top: 150%; left: 83%; max-width: 300px; z-index: 1; }
+.Davenport { top: 230%; left: 61%; max-width: 300px; z-index: 1; }
+.Building { top: 190%; left: 25%; max-width: 300px; z-index: 1; }
+.Protest { top: 490%; left: 80%; max-width: 300px; z-index: 1; }
+.Boyer { top: 470%; left: 32%; max-width: 300px; z-index: 1; }
+.Lombard { top: 320%; left: 12%; max-width: 300px; z-index: 1; }
+
+figcaption {
+    font-family: "source-serif-4", serif;
+    width: 100%;
+    padding-left: 52px;
+
+}
+
+}
+
+@media only screen and (max-width:1100px) {
+  .tree { top: 92%; left: 14%; z-index: 2; max-width: 300px; }
+.Galton { top: 120%; left: 32%; max-width: 300px; z-index: 1; }
+.Macmurchy { top: 140%; left: 83%; max-width: 300px; z-index: 1; }
+.Davenport { top: 210%; left: 61%; max-width: 300px; z-index: 1; }
+.Building { top: 180%; left: 25%; max-width: 300px; z-index: 1; }
+.Protest { top: 480%; left: 80%; max-width: 300px; z-index: 1; }
+.Boyer { top: 450%; left: 30%; max-width: 300px; z-index: 1; }
+.Lombard { top: 305%; left: 12%; max-width: 300px; z-index: 1; }
+
+figcaption {
+    font-family: "source-serif-4", serif;
+    width: 90%;
+padding-left: 66px;
+
+}
+
+}
+
+@media only screen and (max-width:1000px) {
+    .tree { top: 85%; left: 18%; z-index: 2; max-width: 300px; }
+.Galton { top: 120%; left: 28%; max-width: 300px; z-index: 1; }
+.Macmurchy { top: 140%; left: 83%; max-width: 300px; z-index: 1; }
+.Davenport { top: 200%; left: 62%; max-width: 300px; z-index: 1; }
+.Building { top: 190%; left: 25%; max-width: 300px; z-index: 1; }
+.Protest { top: 490%; left: 80%; max-width: 300px; z-index: 1; }
+.Boyer { top: 460%; left: 28%; max-width: 300px; z-index: 1; }
+.Lombard { top: 320%; left: 12%; max-width: 300px; z-index: 1; }
+}
+
+@media only screen and (max-width:900px) {
+    .tree { top: 90%; left: 18%; z-index: 2; max-width: 300px; }
+.Galton { top: 120%; left: 28%; max-width: 300px; z-index: 1; }
+.Macmurchy { top: 160%; left: 83%; max-width: 300px; z-index: 1; }
+.Davenport { top: 200%; left: 62%; max-width: 300px; z-index: 1; }
+.Building { top: 200%; left: 25%; max-width: 300px; z-index: 1; }
+.Protest { top: 500%; left: 80%; max-width: 300px; z-index: 1; }
+.Boyer { top: 480%; left: 28%; max-width: 300px; z-index: 1; }
+.Lombard { top: 320%; left: 12%; max-width: 300px; z-index: 1; }
+}
+
+
+
+@media only screen and (max-width:800px) {
+    .tree { top: 90%; left: 25%; z-index: 2; max-width: 300px; }
+.Galton { top: 1120%; left: 28%; max-width: 300px; z-index: 1; }
+.Macmurchy { top: 160%; left: 75%; max-width: 300px; z-index: 1; }
+.Davenport { top: 1200%; left: 62%; max-width: 300px; z-index: 1; }
+.Building { top: 200%; left: 25%; max-width: 300px; z-index: 1; }
+.Protest { top: 500%; left: 80%; max-width: 300px; z-index: 1; }
+.Boyer { top: 520%; left: 22%; max-width: 300px; z-index: 1; }
+.Lombard { top: 1320%; left: 12%; max-width: 300px; z-index: 1; }
+}
+
+@media only screen and (max-width:750px) {
+    .tree { top: 90%; left: 25%; z-index: 2; max-width: 300px; }
+.Galton { top: 1120%; left: 28%; max-width: 300px; z-index: 1; }
+.Macmurchy { top: 160%; left: 75%; max-width: 300px; z-index: 1; }
+.Davenport { top: 1200%; left: 62%; max-width: 300px; z-index: 1; }
+.Building { top: 220%; left: 25%; max-width: 300px; z-index: 1; }
+.Protest { top: 550%; left: 80%; max-width: 300px; z-index: 1; }
+.Boyer { top: 560%; left: 22%; max-width: 300px; z-index: 1; }
+.Lombard { top: 1320%; left: 12%; max-width: 300px; z-index: 1; }
+}
+
+@media only screen and (max-width:700px) {
+    
+      .tree { top: 90%; left: 18%; z-index: 2; max-width: 300px; }
+.Galton { top: 146%; left: 28%; max-width: 300px; z-index: 1; }
+.Macmurchy { top: 165%; left: 83%; max-width: 300px; z-index: 1; }
+.Davenport { top: 230%; left: 61%; max-width: 300px; z-index: 1; }
+.Building { top: 220%; left: 25%; max-width: 300px; z-index: 1; }
+.Protest { top: 560%; left: 80%; max-width: 300px; z-index: 1; }
+.Boyer { top: 590%; left: 28%; max-width: 300px; z-index: 1; }
+.Lombard { top: 380%; left: 12%; max-width: 300px; z-index: 1; }
+
+   .modal {
+    position: static;
+    margin-top: 0;
+    padding-top: 0;
+    /* allow interactions on mobile when modal is inserted */
+    pointer-events: auto;
+  }
+
+  .modal-content {
+    /* keep the modal in the document flow on small screens */
+    position: static;
+    left: auto;
+    top: auto;
+    margin: 0;
+    width: 100%;
+  }
+
+  /* stack modal body vertically on small screens so extra content appears underneath */
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #modal-extra {
+    width: 100% !important;
+    transition: none;
+    overflow: visible;
+  }
+
+  /* For small viewports, make per-pin floating popups stack vertically and the extra panel expand below */
+  .pin-popup {
+    flex-direction: column;
+    min-width: 240px; /* allow smaller width on mobile */
+    width: calc(100% - 32px);
+    max-width: none;
+  }
+
+  .pin-popup .popup-body {
+    flex: 1 1 auto;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .pin-popup .popup-extra {
+    width: 100% !important;
+    transition: none;
+    max-width: 100%;
+  }
+
+  .pin-popup .popup-extra.active {
+    width: 100% !important;
+  }
+
+}
+
+
+@media only screen and (max-width:600px){
+.tree { top: 113%; left: 18%; z-index: 2; max-width: 300px; }
+.Galton { top: 130%; left: 23%; max-width: 300px; z-index: 1; }
+.Macmurchy { top: 210%; left: 72%; max-width: 300px; z-index: 1; }
+.Davenport { top: 225%; left: 65%; max-width: 300px; z-index: 1; }
+.Building { top: 250%; left: 25%; max-width: 300px; z-index: 1; }
+.Protest { top: 650%; left: 75%; max-width: 300px; z-index: 1; }
+.Boyer { top: 684%; left: 22%; max-width: 300px; z-index: 1; }
+.Lombard { top: 394%; left: 12%; max-width: 300px; z-index: 1; }
+
+}
+
+@media only screen and (max-width:550px){
+.tree { top: 120%; left: 18%; z-index: 2; max-width: 300px; }
+.Galton { top: 120%; left: 23%; max-width: 300px; z-index: 1; }
+.Macmurchy { top: 220%; left: 72%; max-width: 300px; z-index: 1; }
+.Davenport { top: 245%; left: 65%; max-width: 300px; z-index: 1; }
+.Building { top: 270%; left: 25%; max-width: 300px; z-index: 1; }
+.Protest { top: 700%; left: 75%; max-width: 300px; z-index: 1; }
+.Boyer { top: 720%; left: 22%; max-width: 300px; z-index: 1; }
+.Lombard { top: 410%; left: 12%; max-width: 300px; z-index: 1; }
+
+}
+
+@media only screen and (max-width:500px){
+.tree { top: 120%; left: 18%; z-index: 2; max-width: 300px; }
+.Galton { top: 130%; left: 20%; max-width: 300px; z-index: 1; }
+.Macmurchy { top: 240%; left: 72%; max-width: 300px; z-index: 1; }
+.Davenport { top: 290%; left: 65%; max-width: 300px; z-index: 1; }
+.Building { top: 300%; left: 25%; min-width: 210px; max-width: 300px; z-index: 1; }
+.Protest { top: 750%; left: 75%; min-width: 210px; max-width: 300px; z-index: 1; }
+.Boyer { top: 760%; left: 16%; min-width:210px;max-width: 300px; z-index: 1; }
+.Lombard { top: 496%; left: 18%; min-width: 210px; max-width: 300px; z-index: 1; }
+
+}
