@@ -749,12 +749,12 @@ td, th {
     padding: 8px;
 }
 
-table a, table a:visited {
+.quote a, .quote a:visited, table a, table a:visited {
     color: var(--red);
     text-decoration: none;
 }
 
-table a:hover {
+.quote a:hover, table a:hover {
     text-decoration: underline;
 }
 
